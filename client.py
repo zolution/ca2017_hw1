@@ -1,5 +1,5 @@
 import socket
-
+from time import sleep
 
 
 def sendMsg(Socket, Msg, channel):
@@ -31,6 +31,7 @@ def IP(Socket, Msg, channel):
         sendMsg(Socket, str(len(ans)), channel)
         for m in ans:
             sendMsg(Socket, m, channel)
+            sleep(0.75)
 
 
     
