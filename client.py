@@ -14,7 +14,24 @@ def Convert(Socket, Msg, channel):
         else:
             sendMsg(Socket, hex(int(Msg,0)), channel)
     except:
-        sendMsg(Socket, "Invalid Input "+ Msg, channel)
+        sendMsg(Socket, "Invalid CONVERT Input "+ Msg, channel)
+
+def IP(Socket, Msg, channel):
+    print Msg
+    if not Msg.isdigit():
+        sendMsg(Socket, "Invalid IP Input "+ Msg, channel)
+    else:
+        ans = []
+        length = len(Msg)
+        for i in range(1,length):
+            for j in range(i+1,length):
+                for k in range(j+1,length):
+                    if all(int(elem) >= 0 and int(elem) <= 255 for elem in [Msg[0:i],Msg[i:j],Msg[j:k],Msg[k:length]]):
+                        ans.append('.'.join([Msg[0:i],Msg[i:j],Msg[j:k],Msg[k:length]]))
+        sendMsg(Socket, str(len(ans)), channel)
+        for m in ans:
+            sendMsg(Socket, m, channel)
+
 
     
 if __name__ == '__main__':
@@ -32,9 +49,9 @@ if __name__ == '__main__':
         print IRCMsg
         for Msg in IRCMsg.split('\r\n'):
             if Msg.find(":@repeat") != -1:
-                sendMsg(IRCSocket, IRCMsg[IRCMsg.find(":@repeat")+9:], CHANNEL)
+                sendMsg(IRCSocket, Msg[Msg.find(":@repeat")+9:], CHANNEL)
             elif Msg.find(":@convert") != -1:
-                Convert(IRCSocket, IRCMsg[IRCMsg.find(":@convert")+10:], CHANNEL)
+                Convert(IRCSocket, Msg[Msg.find(":@convert")+10:], CHANNEL)
             elif Msg.find(":@ip") != -1:
-                IP(IRCSocket, IRCMsg[IRCMsg.find(":@ip")+5:], CHANNEL)
+                IP(IRCSocket, Msg[Msg.find(":@ip")+5:], CHANNEL)
 
