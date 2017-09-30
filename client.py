@@ -33,6 +33,10 @@ def IP(Socket, Msg, channel):
             sendMsg(Socket, m, channel)
             sleep(0.75)
 
+def Help(Socket, channel):
+    sendMsg(Socket, "@repeat <Message>", channel)
+    sendMsg(Socket, "@convert <Number>", channel)
+    sendMsg(Socket, "@ip <String>", channel)
 
     
 if __name__ == '__main__':
@@ -55,4 +59,6 @@ if __name__ == '__main__':
                 Convert(IRCSocket, Msg[Msg.find(":@convert")+10:], CHANNEL)
             elif Msg.find(":@ip") != -1:
                 IP(IRCSocket, Msg[Msg.find(":@ip")+5:], CHANNEL)
+            elif Msg.find(":@help") != -1:
+                Help(IRCSocket, CHANNEL)
 
