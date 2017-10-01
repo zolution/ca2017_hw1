@@ -44,7 +44,9 @@ if __name__ == '__main__':
     IRCSocket.connect( ('irc.freenode.net', 6667) )
     NICK = 'robot_077'
     USER = 'zolution testing testing Jason'
-    CHANNEL = '#CN_DEMO'
+    conf = open('config','r')
+    content = conf.read()
+    CHANNEL = (content.split('\n'))[0].split('=')[1][1:-1]
     Msg = 'NICK ' + NICK + '\r\nUSER ' + USER + '\r\nJOIN ' + CHANNEL + '\r\n'
     IRCSocket.send(bytes(Msg))
     sendMsg(IRCSocket, "Hello! I am robot.",CHANNEL)
