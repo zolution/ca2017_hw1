@@ -26,7 +26,7 @@ def IP(Socket, Msg, channel):
         for i in range(1,length):
             for j in range(i+1,length):
                 for k in range(j+1,length):
-                    if all(int(elem) >= 0 and int(elem) <= 255 for elem in [Msg[0:i],Msg[i:j],Msg[j:k],Msg[k:length]]):
+                    if all((elem[0] != '0' and int(elem) >= 0 and int(elem) <= 255) or (elem[0] == '0' and len(elem) == 1) for elem in [Msg[0:i],Msg[i:j],Msg[j:k],Msg[k:length]]):
                         ans.append('.'.join([Msg[0:i],Msg[i:j],Msg[j:k],Msg[k:length]]))
         sendMsg(Socket, str(len(ans)), channel)
         for m in ans:
