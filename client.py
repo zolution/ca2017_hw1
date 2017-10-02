@@ -31,14 +31,17 @@ def IP(Socket, Msg, channel):
         sendMsg(Socket, str(len(ans)), channel)
         for m in ans:
             sendMsg(Socket, m, channel)
-            sleep(0.75)
+            if len(ans) > 6:
+                sleep(0.75)
 
 def Help(Socket, channel):
     sendMsg(Socket, "@repeat <Message>", channel)
     sendMsg(Socket, "@convert <Number>", channel)
     sendMsg(Socket, "@ip <String>", channel)
 
-    
+def PingPong(Socket, Reply):
+    Socket.send("PONG :" + Reply + "\r\n")
+
 if __name__ == '__main__':
     IRCSocket = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
     IRCSocket.connect( ('irc.freenode.net', 6667) )
@@ -63,4 +66,6 @@ if __name__ == '__main__':
                 IP(IRCSocket, Msg[Msg.find(":@ip")+5:], CHANNEL)
             elif Msg.find(":@help") != -1:
                 Help(IRCSocket, CHANNEL)
+            elif Msg.find("PING :") != -1:
+                PingPong(IRCSocket, Msg[Msg.find("PING :")+6:])
 
